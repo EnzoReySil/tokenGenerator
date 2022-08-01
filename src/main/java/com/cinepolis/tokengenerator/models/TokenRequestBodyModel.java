@@ -23,7 +23,7 @@ public class TokenRequestBodyModel {
     public TokenRequestBodyModel(){
     }
 
-
+    //TODO: Preguntar el mejor lugar para todo este código ... ¿En el controlador? ¿En el modelo?
     public TokenRequestBodyModel(Map<String, Object> requestBody) {
         if (requestBody.get("operation") == "Payment"){
             this.operation = (String) requestBody.get("operation");
