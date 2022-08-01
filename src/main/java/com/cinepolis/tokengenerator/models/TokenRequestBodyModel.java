@@ -18,13 +18,23 @@ public class TokenRequestBodyModel {
     private String mid;
     private String terminal;
 
+    private String token;
+
     public TokenRequestBodyModel(){
     }
 
+
     public TokenRequestBodyModel(Map<String, Object> requestBody) {
-        this.operation = (String) requestBody.get("operation");
-        unpackNestedPayment(requestBody);
-        unpackNestedPaymentMethod(requestBody);
+        if (requestBody.get("operation") == "Payment"){
+            this.operation = (String) requestBody.get("operation");
+            unpackNestedPayment(requestBody);
+            unpackNestedPaymentMethod(requestBody);
+        }
+        else if (requestBody.get("operation") == "Refund") {
+            this.operation = (String) requestBody.get("operation");
+            unpackNestedRefund(requestBody);
+            unpackNestedUpcTokenData(requestBody);
+        }
     }
 
     @JsonProperty("payment")
@@ -35,6 +45,14 @@ public class TokenRequestBodyModel {
         this.gatewaySecondTransactionId = (String) payment.get("gatewaySecondTransactionId");
     }
 
+    @JsonProperty("refund")
+    private void unpackNestedRefund(Map<String, Object> refund) {
+        this.amount = (String) refund.get("amount");
+        this.currency = (String) refund.get("currency");
+        this.paymentNumber = (String) refund.get("paymentNumber");
+        this.gatewaySecondTransactionId = (String) refund.get("gatewaySecondTransactionId");
+    }
+
     @JsonProperty("paymentMethod")
     private void unpackNestedPaymentMethod(Map<String, Object> paymentMethod) {
         Map<String, Object> upcTokenData = (Map<String, Object>) paymentMethod.get("upcTokenData");
@@ -43,9 +61,16 @@ public class TokenRequestBodyModel {
         this.terminal = (String) upcTokenData.get("Terminal");
     }
 
+    @JsonProperty("upcTokenData")
+    private void unpackNestedUpcTokenData(Map<String, Object> upcTokenData) {
+        this.redsysToken = "";
+        this.mid = (String) upcTokenData.get("Mid");
+        this.terminal = (String) upcTokenData.get("Terminal");
+    }
 
     public String generatedToken() {
-        return operation + amount + currency + paymentNumber + gatewaySecondTransactionId + redsysToken + mid + terminal;
+        setToken(operation + amount + currency + paymentNumber + gatewaySecondTransactionId + redsysToken + mid + terminal);
+        return token;
     }
 }
 
