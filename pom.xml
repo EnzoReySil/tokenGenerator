@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.cinepolis</groupId>
-    <artifactId>tokenGenerator</artifactId>
+    <artifactId>token-generator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>tokenGenerator</name>
     <description>tokenGenerator</description>
