@@ -8,12 +8,7 @@ import java.util.HashMap;
 @RestController
 public class TokenGeneratorController {
 
-    @RequestMapping("/")
-    public @ResponseBody String greeting() {
-        return "Cinepolis Token Generator Service";
-    }
-
-    @PostMapping(value = "/token", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/", consumes = "application/json", produces = "application/json")
     public HashMap<String, Object> generateToken(@RequestBody TokenRequestBodyModel tokenRequestBodyModel) {
         HashMap<String, Object> response = new HashMap<>();
         response.put("token", tokenRequestBodyModel.generatedToken());
